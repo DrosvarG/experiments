@@ -1,0 +1,10 @@
+.*
+*~
+build/
+out/
+
+CMakeSettings.json
+
+!.clang-format
+!.editorconfig
+!.gitignore
