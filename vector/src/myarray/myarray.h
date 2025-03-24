@@ -1,29 +1,45 @@
 #ifndef MYARRAY_MYARRAY_H
 #define MYARRAY_MYARRAY_H
 
-#include <cstdlib>
+#include <cstddef>
+#include <limits>
 
 namespace myarray
 {
 class MyIntArray
 {
 public:
+    using iterator = int*;
+    using const_iterator = const iterator;
     using size_type = std::size_t;
     using value_type = int;
 
 public:
-    MyIntArray(size_type);
+    explicit MyIntArray(size_type);
     MyIntArray(const MyIntArray&);
     MyIntArray(MyIntArray&&);
     ~MyIntArray();
 
-    int& operator[](size_type);
-    const int& operator[](size_type) const;
+    MyIntArray& operator=(const MyIntArray&);
+    MyIntArray& operator=(MyIntArray&&);
 
-    size_type size() const;
+    int& operator[](size_type id) { return values_[id]; }
+    const int& operator[](size_type id) const { return values_[id]; }
+
+    iterator begin() { return values_; }
+    iterator end() { return values_ + size_; }
+    iterator begin() const { return values_; };
+    iterator end() const { return values_ + size_; };
+
+    size_type size() const { return size_; }
+    size_type max_size() const { return std::numeric_limits<size_type>::max() / sizeof(value_type); }
+    bool empty() const { return size() == 0; }
 
 private:
-    value_type* values_;
+    void destroy();
+
+private:
+    value_type* values_ = nullptr;
     size_type size_ = 0;
 };
 }

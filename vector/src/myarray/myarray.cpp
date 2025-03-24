@@ -1,6 +1,8 @@
 #include "myarray/myarray.h"
 
+#include <algorithm>
 #include <iostream>
+#include <iterator>
 
 namespace myarray
 {
@@ -8,7 +10,7 @@ MyIntArray::MyIntArray(size_type size)
     : size_(size)
 {
     values_ = new int[size_];
-    for(auto i = size_type(0); i < size_; i++)
+    for(size_type i = 0; i < size_; ++i)
         values_[i] = 0;
 }
 
@@ -16,8 +18,7 @@ MyIntArray::MyIntArray(const MyIntArray& other)
     : size_(other.size_)
 {
     values_ = new int[size_];
-    for(auto i = size_type(0); i < size_; i++)
-        values_[i] = other.values_[i];
+    std::copy(other.values_, other.values_ + size_, values_);
 }
 
 MyIntArray::MyIntArray(MyIntArray&& other)
@@ -28,20 +29,33 @@ MyIntArray::MyIntArray(MyIntArray&& other)
 
 MyIntArray::~MyIntArray()
 {
-    delete values_;
+    if(values_)
+        destroy();
 }
 
-int& MyIntArray::operator[](size_type id)
+MyIntArray& MyIntArray::operator=(const MyIntArray& other)
 {
-    return values_[id];
-}
-const int& MyIntArray::operator[](size_type id) const
-{
-    return values_[id];
+    if(size_ != other.size_)
+    {
+        destroy();
+        size_ = other.size_;
+        values_ = new int[size_];
+    }
+    std::copy(other.values_, other.values_ + size_, values_);
+    return *this;
 }
 
-MyIntArray::size_type MyIntArray::size() const
+MyIntArray& MyIntArray::operator=(MyIntArray&& other)
 {
-    return size_;
+    if(size_ != other.size_)
+        size_ = other.size_;
+    std::swap(values_, other.values_);
+    return *this;
 }
+
+void MyIntArray::destroy()
+{
+    delete[] values_;
+}
+
 }
