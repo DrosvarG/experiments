@@ -17,10 +17,11 @@ set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 #=============================================================================
 
 add_library(myarray STATIC 
-    src/myarray/myarray.cpp
-    src/myarray/myarray.h    
+    src/myarray/myarray.h 
+    src/myarray/myarray.tpp  
 )
 target_include_directories(myarray PUBLIC src)
+set_target_properties(myarray PROPERTIES LINKER_LANGUAGE CXX)
 
 add_executable(vector src/main.cpp)
 target_link_libraries(vector PRIVATE myarray)

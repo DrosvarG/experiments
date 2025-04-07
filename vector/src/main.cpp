@@ -3,7 +3,8 @@
 #include <cstdlib>
 #include <iostream>
 
-void printArray(const myarray::MyIntArray a)
+template <typename T>
+void printArray(const myarray::MyArray<T> a)
 {
     for(auto x: a)
         std::cout << x << ",";
@@ -12,8 +13,8 @@ void printArray(const myarray::MyIntArray a)
 
 int main()
 {
-    auto array = myarray::MyIntArray(3);
-    auto array2 = myarray::MyIntArray(5);
+    auto array = myarray::MyArray<int>(3);
+    auto array2 = myarray::MyArray<int>(5);
 
     array[0] = 5;
     array[1] = array[0];
