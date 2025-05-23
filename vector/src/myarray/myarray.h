@@ -104,10 +104,12 @@ public:
     using size_type = std::size_t;
     using value_type = T;
 
-    explicit MyArray(size_type);
+    MyArray();
     MyArray(const MyArray&);
     MyArray(MyArray&&);
     ~MyArray();
+
+    explicit MyArray(size_type);
 
     MyArray& operator=(const MyArray&);
     MyArray& operator=(MyArray&&);

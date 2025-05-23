@@ -9,8 +9,8 @@ namespace myarray
 {
 
 template <typename T>
-MyArray<T>::MyArray(size_type size)
-    : size_(size)
+MyArray<T>::MyArray()
+    : size_(size_type())
 {
     values_ = new value_type[size_];
     for(size_type i = 0; i < size_; ++i)
@@ -37,6 +37,15 @@ MyArray<T>::~MyArray()
 {
     if(values_)
         destroy();
+}
+
+template <typename T>
+MyArray<T>::MyArray(size_type size)
+    : size_(size)
+{
+    values_ = new value_type[size_];
+    for(size_type i = 0; i < size_; ++i)
+        values_[i] = value_type();
 }
 
 template <typename T>
