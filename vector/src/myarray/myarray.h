@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <iterator>
 #include <limits>
+#include <memory>
 
 namespace myarray
 {
@@ -107,7 +108,7 @@ public:
     MyArray();
     MyArray(const MyArray&);
     MyArray(MyArray&&);
-    ~MyArray();
+    ~MyArray() = default;
 
     explicit MyArray(size_type);
 
@@ -117,20 +118,17 @@ public:
     int& operator[](size_type id) { return values_[id]; }
     const int& operator[](size_type id) const { return values_[id]; }
 
-    iterator begin() { return Iterator(values_); }
-    iterator end() { return Iterator(values_ + size_); }
-    const_iterator begin() const { return Iterator(values_); };
-    const_iterator end() const { return Iterator(values_ + size_); };
+    iterator begin() { return Iterator(values_.get()); }
+    iterator end() { return Iterator(values_.get() + size_); }
+    const_iterator begin() const { return Iterator(values_.get()); };
+    const_iterator end() const { return Iterator(values_.get() + size_); };
 
     size_type size() const { return size_; }
     size_type max_size() const { return std::numeric_limits<size_type>::max() / sizeof(value_type); }
     bool empty() const { return size() == 0; }
 
 private:
-    void destroy();
-
-private:
-    value_type* values_ = nullptr;
+    std::unique_ptr<value_type[]> values_ = nullptr;
     size_type size_ = 0;
 };
 }
